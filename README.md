@@ -1,6 +1,7 @@
 # Movies Inventory Web App
 
 **Project name:** Cinematx
+
 **Author:** Harry Le
 
 ### Overview
