@@ -1,16 +1,8 @@
-<<<<<<< HEAD
 # Movies Inventory Web App
 
 **Project name:** Cinematx
 
 **Author:** Harry Le
-=======
-# cinematx-mern
-
-**Project name:** Cinematx
-**Author:** Hao Phong Le
-**Student Number:** N01605830
->>>>>>> c584d35 (First Commit# Please enter the commit message for your changes. Lines starting)
 
 ### Overview
 
@@ -113,7 +105,3 @@ cinematx/
 - Use Heroku for both frontend and backend
 - Set up MongoDB Atlas connection
 - Environment variables in `.env` (JWT_SECRET, DB_URI, etc.)
-<<<<<<< HEAD
-=======
-  > > > > > > > 4eeccf0 (First Commit)
->>>>>>> c584d35 (First Commit# Please enter the commit message for your changes. Lines starting)

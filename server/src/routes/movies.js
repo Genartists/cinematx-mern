@@ -1,16 +1,26 @@
 import express from "express";
 import Movie from "../models/movie.js";
+import authenticationToken from "../middleware/is-auth.middleware.js";
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  const movies = await Movie.find();
-  res.json(movies);
+router.get("/mine", authenticationToken, async (req, res) => {
+  const movies = await Movie.find({ owner: req.user.userId });
+  res.json({ data: movies });
 });
 
-router.post("/", async (req, res) => {
-  const movie = new Movie(req.body);
+router.post("/", authenticationToken, async (req, res) => {
+  const { name, description, year, genres, rating } = req.body;
+  const movie = new Movie({
+    name,
+    description,
+    year,
+    genres,
+    rating,
+    owner: req.user.userId,
+  });
+
   await movie.save();
-  res.json(movie);
+  res.status(201).json({ message: "Movie added successful", data: movie });
 });
 
 router.put("/:id", async (req, res) => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { createMovie } from "../api/moviesAPI";
 
 
@@ -18,34 +18,36 @@ function AddMovieForm({ onMovieAdded }) {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      const data = {
-        ...form,
-        year: parseInt(form.year, 10),
-        rating: parseFloat(form.rating),
-        genres: form.genres
-          .split(",")
-          .map((g) => g.trim())
-          .filter((g) => g),
-      };
-      const newMovie = await createMovie(data);
-      onMovieAdded(newMovie);
-      setForm({
-        name: "",
-        description: "",
-        year: "",
-        genres: "",
-        rating: "",
-      });
-    } catch (err) {
-      setError("Failed to add movie.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  e.preventDefault();
+  setError("");
+  setLoading(true);
+  try {
+    const data = {
+      name: form.name,
+      description: form.description,
+      year: parseInt(form.year, 10),
+      rating: parseFloat(form.rating),
+      genres: form.genres
+        .split(",")
+        .map((g) => g.trim())
+        .filter((g) => g), 
+    };
+
+    const newMovie = await createMovie(data);
+    onMovieAdded(newMovie.data); 
+    setForm({
+      name: "",
+      description: "",
+      year: "",
+      genres: "",
+      rating: "",
+    });
+  } catch (err) {
+    setError("Failed to add movie.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <form
