@@ -1,8 +1,8 @@
-# Movies Web App
+# Movies Inventory Web App
 
 **Project name:** Cinematx
-**Author:** Hao Phong Le
-**Student Number:** N01605830
+
+**Author:** Harry Le
 
 ### Overview
 

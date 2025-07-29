@@ -1,3 +1,5 @@
 node_modules\n.env*\ndist\n
 
 document/
+
+.env
