@@ -2,4 +2,7 @@ node_modules\n.env*\ndist\n
 
 document/
 
-.env
+
+# Ignore environment files
+server/.env
+client/.env
