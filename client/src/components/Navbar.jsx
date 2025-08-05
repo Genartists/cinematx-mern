@@ -4,7 +4,7 @@ function Navbar({ username, onLogout }) {
   return (
     <nav className="flex items-center justify-between px-16 text-[#153a43] h-18">
       <div className="font-extrabold text-2xl cursor-pointer tracking-wide">
-        <a href="/Home">Cinematx</a>
+        <a href="/">Cinematx</a>
         <strong className="text-[#ff7c4d]">.</strong>
       </div>
       <div className="flex items-center gap-4">

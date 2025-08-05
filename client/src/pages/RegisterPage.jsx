@@ -27,12 +27,11 @@ function Register() {
     try {
       await registerUser({ username: form.username, password: form.password });
       setSuccess("Registration successful! Redirecting to login...");
-      
+
       setTimeout(() => {
         navigate("/login");
       }, 1000);
     } catch (err) {
-      
       setError(err.response?.data?.message || "Registration failed.");
     }
   }
@@ -49,7 +48,10 @@ function Register() {
         {error && <div className="text-red-600 text-center">{error}</div>}
         {success && <div className="text-green-600 text-center">{success}</div>}
         <div>
-          <label className="block font-semibold mb-1 text-gray-900" htmlFor="username">
+          <label
+            className="block font-semibold mb-1 text-gray-900"
+            htmlFor="username"
+          >
             Username
           </label>
           <input
@@ -65,7 +67,10 @@ function Register() {
           />
         </div>
         <div>
-          <label className="block font-semibold mb-1 text-gray-900" htmlFor="password">
+          <label
+            className="block font-semibold mb-1 text-gray-900"
+            htmlFor="password"
+          >
             Password
           </label>
           <input
@@ -81,7 +86,10 @@ function Register() {
           />
         </div>
         <div>
-          <label className="block font-semibold mb-1 text-gray-900" htmlFor="confirm">
+          <label
+            className="block font-semibold mb-1 text-gray-900"
+            htmlFor="confirm"
+          >
             Confirm Password
           </label>
           <input
@@ -104,7 +112,10 @@ function Register() {
         </button>
         <p className="text-center text-gray-600">
           Already have an account?{" "}
-          <a href="/login" className="text-orange-500 font-bold hover:underline">
+          <a
+            href="/login"
+            className="text-orange-500 font-bold hover:underline"
+          >
             Login
           </a>
         </p>

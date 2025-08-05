@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { createMovie } from "../api/moviesAPI";
 
 function AddMovieModal({ open, onClose, onMovieAdded }) {
@@ -14,7 +14,6 @@ function AddMovieModal({ open, onClose, onMovieAdded }) {
   const [show, setShow] = useState(false);
   const overlayRef = useRef();
 
-  // Reset form mỗi lần mở
   useEffect(() => {
     if (open) {
       setForm({
@@ -30,7 +29,6 @@ function AddMovieModal({ open, onClose, onMovieAdded }) {
     }
   }, [open]);
 
-  // Đóng modal khi click ra ngoài
   useEffect(() => {
     function handleClickOutside(e) {
       if (overlayRef.current && e.target === overlayRef.current) {

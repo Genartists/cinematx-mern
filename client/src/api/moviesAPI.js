@@ -33,3 +33,14 @@ export async function updateMovie(id, data) {
   });
   return res.data;
 }
+
+export async function fetchRecommendedMovies() {
+  const token = localStorage.getItem("token");
+  const res = await axios.get(`${API_URL}/recommend`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  console.log(res.data.recommendations);
+  return res.data.recommendations;
+}
+
+

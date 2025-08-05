@@ -1,8 +1,81 @@
-// import movieImg from "../assets/s-1400.jpg"
-import heroImage from "../assets/movie.jpg";
+import { Link } from "react-router";
+function RatingMood({ rating }) {
+  const num = Number(rating);
+  if (Number.isNaN(num)) return null;
+
+  // Normalize to a 0–100 scale
+  const score100 = num > 10 ? num : num * 10;
+
+  let color = "bg-red-500",
+    ring = "ring-red-200",
+    face = "sad",
+    label = "Low";
+  if (score100 >= 80) {
+    color = "bg-green-500";
+    ring = "ring-green-200";
+    face = "smile";
+    label = "Great";
+  } else if (score100 >= 60) {
+    color = "bg-orange-400";
+    ring = "ring-orange-200";
+    face = "neutral";
+    label = "Okay";
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <div
+        className={`w-5 h-5 rounded-full ${color} ring-2 ${ring} grid place-items-center text-white`}
+        title={`${label} (${num})`}
+        aria-label={`Rating ${num} ${label}`}
+      >
+        {/* Face icon */}
+        {face === "smile" && (
+          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+            <circle cx="9" cy="10" r="1.5" />
+            <circle cx="15" cy="10" r="1.5" />
+            <path
+              d="M8 14c1.2 1.6 2.8 2.4 4 2.4s2.8-.8 4-2.4"
+              stroke="white"
+              strokeWidth="1.5"
+              fill="none"
+              strokeLinecap="round"
+            />
+          </svg>
+        )}
+        {face === "neutral" && (
+          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+            <circle cx="9" cy="10" r="1.5" />
+            <circle cx="15" cy="10" r="1.5" />
+            <path
+              d="M8 15h8"
+              stroke="white"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+        )}
+        {face === "sad" && (
+          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+            <circle cx="9" cy="10" r="1.5" />
+            <circle cx="15" cy="10" r="1.5" />
+            <path
+              d="M8 17c1.2-1.6 2.8-2.4 4-2.4s2.8.8 4 2.4"
+              stroke="white"
+              strokeWidth="1.5"
+              fill="none"
+              strokeLinecap="round"
+            />
+          </svg>
+        )}
+      </div>
+      <span className="text-slate-700 font-semibold">{num}/10</span>
+    </div>
+  );
+}
 
 // render movies was fetched
-function MovieList({ movies, onDelete, onEdit }) {
+function MovieList({ movies, onDelete, onEdit, handleToggleWatched }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-10">
       {movies.length === 0 ? (
@@ -15,8 +88,6 @@ function MovieList({ movies, onDelete, onEdit }) {
             className="group relative hover:scale-108 bg-white rounded-2xl shadow-lg p-5 flex flex-col gap-2 -translate-y-4 group-hover:translate-y-0 transition-all duration-200"
             key={movie._id}
           >
-            {/* <img src={heroImage} alt="" className=" h-auto w-auto" /> */}
-
             <div className="flex flex-col gap-2 absolute top-2 right-2 z-10">
               {/* Delete button */}
               <button
@@ -64,19 +135,69 @@ function MovieList({ movies, onDelete, onEdit }) {
               {movie.genres?.map((genre) => (
                 <span
                   key={genre}
-                  className="bg-[#9CE53E] text-[#245313] px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 hover:scale-105"
+                  className="bg-[#9CE53E] text-[#245313] px-3 py-1 text-xs font-bold rounded-full transition-all duration-200 hover:scale-105"
                 >
                   {genre}
                 </span>
               ))}
             </div>
+
             <div className="flex justify-between items-center mt-auto">
-              <div className="text-yellow-500 font-bold">⭐ {movie.rating}</div>
-              {/* {item.watched && (
-                <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">
-                  Watched
-                </span>
-              )} */}
+              <RatingMood rating={movie.rating} />
+
+              {/* Watch toggle button - bottom right */}
+              <div className="flex items-center gap-2">
+                {movie.watched && (
+                  <span className="text-green-600 text-sm font-medium transition-all duration-500">
+                    Watched
+                  </span>
+                )}
+                <button
+                  className={`w-6 h-6 rounded-full shadow cursor-pointer transition-all duration-300 grid place-items-center ${
+                    movie.watched
+                      ? "bg-green-500 hover:bg-green-600"
+                      : "bg-gray-400 hover:bg-gray-500"
+                  }`}
+                  title={
+                    movie.watched ? "Mark as unwatched" : "Mark as watched"
+                  }
+                  onClick={() => handleToggleWatched(movie._id)}
+                >
+                  {movie.watched ? (
+                    <svg
+                      className="w-3 h-3 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="w-4 h-4 text-white opa"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         ))

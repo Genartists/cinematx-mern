@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar.jsx";
 import MovieList from "../components/MoviesList.jsx";
-import { fetchMovies, deleteMovie } from "../api/moviesAPI.js";
-import AddMovieForm from "../components/AddMovieForm.jsx";
+import {
+  fetchMovies,
+  deleteMovie,
+  fetchRecommendedMovies,
+} from "../api/moviesAPI.js";
 import heroImage from "../assets/hero3.jpg";
 import EditMovieModal from "../components/EditMovieModal.jsx";
 import AddMovieModal from "../components/AddMovieModal.jsx";
+import RecommendedMovies from "../components/RecommendMovieList.jsx";
 
 function Home() {
   const [movies, setMovies] = useState([]);
@@ -13,6 +17,23 @@ function Home() {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [movieToEdit, setMovieToEdit] = useState(null);
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [recommendations, setRecommendations] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Load recommendations from localStorage on component mount
+  useEffect(() => {
+    const savedRecommendations = localStorage.getItem("movieRecommendations");
+    if (savedRecommendations) {
+      try {
+        const parsedRecommendations = JSON.parse(savedRecommendations);
+        setRecommendations(parsedRecommendations);
+      } catch (error) {
+        console.error("Error parsing saved recommendations:", error);
+        // If there's an error parsing, clear the invalid data
+        localStorage.removeItem("movieRecommendations");
+      }
+    }
+  }, []);
 
   // show movies from db
   useEffect(() => {
@@ -20,6 +41,27 @@ function Home() {
       .then(setMovies)
       .catch((err) => console.error("Fetch movies failed:", err));
   }, []);
+
+  const handleGetRecommend = async () => {
+    try {
+      setIsLoading(true);
+      const recList = await fetchRecommendedMovies();
+      const recommendationsToStore = recList || [];
+      
+      // Update state
+      setRecommendations(recommendationsToStore);
+      
+      // Save to localStorage
+      localStorage.setItem("movieRecommendations", JSON.stringify(recommendationsToStore));
+    } catch (error) {
+      console.error(error);
+      setRecommendations([]);
+      // Clear localStorage if there's an error
+      localStorage.removeItem("movieRecommendations");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // add movies
   const handleMovieAdded = (newMovie) => {
@@ -49,11 +91,21 @@ function Home() {
     );
   };
 
+  const handleToggleWatched = (movieId) => {
+    setMovies((prevMovies) =>
+      prevMovies.map((movie) =>
+        movie._id === movieId ? { ...movie, watched: !movie.watched } : movie
+      )
+    );
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    localStorage.removeItem("movieRecommendations"); // Clear recommendations on logout
     setUser(null);
     setMovies([]);
+    setRecommendations([]);
   };
 
   return (
@@ -97,7 +149,6 @@ function Home() {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 mt-10">
-        <AddMovieForm onMovieAdded={handleMovieAdded} />
         <div
           className="shadow mt-18 w-full p-[5%] bg-[#f5f3ee] rounded-2xl"
           style={{
@@ -120,7 +171,7 @@ function Home() {
               onClick={() => setOpenAddModal(true)}
             >
               <svg
-                class="stroke-teal-500 fill-none group-hover:fill-teal-800 group-active:stroke-teal-200 group-active:fill-teal-600 group-active:duration-0 duration-300"
+                class="stroke-[#153a43] fill-none group-active:stroke-[#ff7c4d] group-active:fill-[#ff7c4d] group-active:duration-0 duration-300"
                 viewBox="0 0 24 24"
                 height="50px"
                 width="50px"
@@ -130,16 +181,26 @@ function Home() {
                   stroke-width="1.5"
                   d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
                 ></path>
-                <path stroke-width="1.5" d="M8 12H16"></path>
-                <path stroke-width="1.5" d="M12 16V8"></path>
+                <path
+                  className="group-active:stroke-white group-active:fill-white"
+                  stroke-width="1.5"
+                  d="M8 12H16"
+                ></path>
+                <path
+                  className="group-active:stroke-white group-active:fill-white"
+                  stroke-width="1.5"
+                  d="M12 16V8"
+                ></path>
               </svg>
             </button>
           </div>
           <MovieList
             movies={movies}
+            handleToggleWatched={handleToggleWatched}
             onDelete={handleDelete}
             onEdit={handleEdit}
           />
+
           <EditMovieModal
             open={openEditModal}
             onClose={() => setOpenEditModal(false)}
@@ -151,6 +212,78 @@ function Home() {
             onClose={() => setOpenAddModal(false)}
             onMovieAdded={handleMovieAdded}
           />
+        </div>
+
+        <div
+          className="shadow mt-18 w-full p-[5%] bg-[#f5f3ee] rounded-2xl"
+          style={{
+            backgroundImage:
+              " linear-gradient(218deg, #ffdfe01a 48%, #efd9e399)",
+          }}
+        >
+          <div className="flex items-center justify-between">
+            <div className="">
+              <h1 className="text-4xl font-bold text-slate-800 mb-2">
+                Picked for you
+              </h1>
+              <p className="text-slate-600">
+                Recommended List base on your movies preferences
+              </p>
+            </div>
+
+            <button
+              onClick={handleGetRecommend}
+              disabled={isLoading}
+              className={`group flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                isLoading
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-teal-300 hover:bg-teal-400 text-black cursor-pointer "
+              }`}
+            >
+              {isLoading ? (
+                <>
+                  <svg
+                    className="animate-spin w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                  Loading...
+                </>
+              ) : (
+                <>
+                  <svg
+                    className="w-5 h-5 transition-transform group-hover:rotate-12"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                    />
+                  </svg>
+                  Generate
+                </>
+              )}
+            </button>
+          </div>
+          <RecommendedMovies movies={recommendations} isLoading={isLoading} />
         </div>
       </main>
       <footer className="mt-10"></footer>
