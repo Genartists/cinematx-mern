@@ -6,3 +6,8 @@ document/
 # Ignore environment files
 server/.env
 client/.env
+
+server/server_phase3.zip
+server/server-src.zip
+server/server.zip
+client/client_phase3.zip
