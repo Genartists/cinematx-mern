@@ -47,12 +47,15 @@ function Home() {
       setIsLoading(true);
       const recList = await fetchRecommendedMovies();
       const recommendationsToStore = recList || [];
-      
+
       // Update state
       setRecommendations(recommendationsToStore);
-      
+
       // Save to localStorage
-      localStorage.setItem("movieRecommendations", JSON.stringify(recommendationsToStore));
+      localStorage.setItem(
+        "movieRecommendations",
+        JSON.stringify(recommendationsToStore)
+      );
     } catch (error) {
       console.error(error);
       setRecommendations([]);
@@ -134,7 +137,7 @@ function Home() {
             {/* Flex container for left/right split, aligns bottom */}
             <div className="w-full flex flex-col md:flex-row justify-between items-end px-6 md:px-16 pb-12 gap-8">
               <div className="flex-1 text-left">
-                <h1 className="text-white text-5xl md:text-8xl xl:text-9xl font-extrabold mb-2 drop-shadow-lg leading-[1.05]">
+                <h1 className="text-white text-5xl md:text-8xl xl:text-9xl font-extrabold mb-2 drop-shadow-lg leading-[1.05] stroke-white stroke-2">
                   <span className="text-[#ff7c4d]">Cinematx.</span>
                 </h1>
               </div>
