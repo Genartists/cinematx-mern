@@ -9,8 +9,8 @@
 Cinematx is a full-stack movie management web application developed using the MERN stack: MongoDB, Express.js, React.js, and Node.js. It supports secure user registration and login, movies recommendation, and allows authenticated users to create, edit, view, and delete their own movie collections.
 
 ## Link Demo
-[[https://cinematx-snowy.vercel.app/]]
 
+**https://cinematx-snowy.vercel.app/**
 <img width="1851" height="940" alt="image" src="https://github.com/user-attachments/assets/6dadad8c-e246-4320-8a07-28012076b962" />
 
 
