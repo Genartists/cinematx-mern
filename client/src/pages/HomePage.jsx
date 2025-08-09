@@ -237,10 +237,10 @@ function Home() {
             <button
               onClick={handleGetRecommend}
               disabled={isLoading}
-              className={`group flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+              className={`group flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all border-[3px] border-black duration-300 ${
                 isLoading
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-teal-300 hover:bg-teal-400 text-black cursor-pointer "
+                  : "bg-[#5BE9B9] hover:bg-teal-400 text-black cursor-pointer "
               }`}
             >
               {isLoading ? (

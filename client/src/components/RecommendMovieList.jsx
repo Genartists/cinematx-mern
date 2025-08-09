@@ -94,14 +94,19 @@ function MovieCard({ movie }) {
 }
 
 function RecommendedMovies({ movies = [], isLoading }) {
-  if (isLoading)
+  if (isLoading) {
     return (
-      <div className="flex-col gap-4 w-full flex items-center justify-center">
-        <div className="w-20 h-20 border-4 border-transparent text-teal-300 text-4xl animate-spin flex items-center justify-center border-t-teal-300 rounded-full">
-          <div className="w-16 h-16 border-4 border-transparent text-orange-400 text-2xl animate-spin flex items-center justify-center border-t-orange-400 rounded-full"></div>
+      <div class="flex flex-col bg-neutral-200 w-56 h-64 animate-pulse justify-center mt-16 rounded-xl p-4 gap-4">
+        <div class="bg-neutral-300 w-full h-32 animate-pulse rounded-md"></div>
+        <div class="flex flex-col gap-2">
+          <div class="bg-neutral-300 w-full h-4 animate-pulse rounded-md"></div>
+          <div class="bg-neutral-300 w-4/5 h-4 animate-pulse rounded-md"></div>
+          <div class="bg-neutral-300 w-full h-4 animate-pulse rounded-md"></div>
+          <div class="bg-neutral-300 w-2/4 h-4 animate-pulse rounded-md"></div>
         </div>
       </div>
     );
+  }
 
   if (!movies.length)
     return (
