@@ -1,4 +1,4 @@
-# Movies Inventory Web App
+# Movies Tracking Web App
 
 **Project name:** Cinematx
 
@@ -6,7 +6,13 @@
 
 ### Overview
 
-Cinematx is a full-stack movie management web application developed using the MERN stack: MongoDB, Express.js, React.js, and Node.js. It supports secure user registration and login, and allows authenticated users to create, edit, view, and delete their own movie collections.
+Cinematx is a full-stack movie management web application developed using the MERN stack: MongoDB, Express.js, React.js, and Node.js. It supports secure user registration and login, movies recommendation, and allows authenticated users to create, edit, view, and delete their own movie collections.
+
+## Link Demo
+
+**https://cinematx-snowy.vercel.app/**
+<img width="1851" height="940" alt="image" src="https://github.com/user-attachments/assets/6dadad8c-e246-4320-8a07-28012076b962" />
+
 
 ## **Features**
 
@@ -15,25 +21,24 @@ Cinematx is a full-stack movie management web application developed using the ME
 - Access control: only movie owners can edit/delete
 - Input validation and error handling on both frontend and backend
 - Responsive React UI with protected routes and conditional rendering
-- Deployment-ready on Heroku with environment configuration
+- Implement movies recommendation with intergration of GenAI API
 
-## **Tech Stack**
+## **Tech Stack (MERN)**
 
 ### Frontend
 
 - React.js (with Context API)
-- SWR hooks
-- React Router DOM
+- React Router
 - Axios (API calls)
 - Form validation
 - Tailwind CSS
 
 ### Backend
 
-- Node.js + Express.js (Pug)
+- Node.js + Express.js
 - JWT authentication
 - Bcrypt password hashing
-- Middleware for auth and error handling
+- Gemini API
 
 ### Database
 
@@ -46,12 +51,6 @@ Cinematx is a full-stack movie management web application developed using the ME
 - Git & GitHub
 - VSCode
 
-## **Software Architecture**
-
-**Client-Server Architecture**
-
-![[movies-web-app.jpg]]
-
 **Architecture Overview:**
 
 - **Presentation Tier** (Client):
@@ -63,10 +62,6 @@ Cinematx is a full-stack movie management web application developed using the ME
 - **Data Tier** (Database):
   - **MongoDB** via Mongoose
   - Stores and manages data (users, movies) in a cloud-hosted NoSQL database (MongoDB Atlas)
-
-## **Flowchart**
-
-![[movies-web-flow.png]]
 
 ## **Project Structure**
 
@@ -85,7 +80,7 @@ cinematx/
 │   ├── public/
 │   ├── src/
 │   │   ├── components/      # Reusable UI components
-│   │   ├── pages/           # Login, Register, MovieList, etc.
+│   │   ├── pages/           # Login, Register, Home, etc.
 │   │   ├── services/        # API calls via Axios
 │   │   ├── context/         # Auth context
 │   │   ├── App.jsx
@@ -102,6 +97,5 @@ cinematx/
 
 ## **Deployment**
 
-- Use Heroku for both frontend and backend
-- Set up MongoDB Atlas connection
+- Vercel for frontend, Render for backend, Mongo Atlas for database
 - Environment variables in `.env` (JWT_SECRET, DB_URI, etc.)
