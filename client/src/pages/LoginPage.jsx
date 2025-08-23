@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { loginUser } from "../api/authAPI";
 import { useNavigate } from "react-router";
+import { Link } from "react-router";
 
 function Eye({ isRightEye = false }) {
   const eyeRef = useRef(null);
@@ -204,12 +205,12 @@ function Login() {
           </button>
           <p className="text-center text-gray-600">
             Don&apos;t have an account?{" "}
-            <a
-              href="/register"
+            <Link
+              to="/register"
               className="text-[#ff7c4d] font-extrabold hover:underline"
             >
               Register
-            </a>
+            </Link>
           </p>
         </form>
       </div>

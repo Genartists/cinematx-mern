@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { registerUser } from "../api/authAPI";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 function Register() {
   const [form, setForm] = useState({ username: "", password: "", confirm: "" });
@@ -112,12 +112,12 @@ function Register() {
         </button>
         <p className="text-center text-gray-600">
           Already have an account?{" "}
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="text-orange-500 font-bold hover:underline"
           >
             Login
-          </a>
+          </Link>
         </p>
       </form>
     </div>
